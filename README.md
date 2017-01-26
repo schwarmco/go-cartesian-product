@@ -19,8 +19,8 @@ import (
     "github.com/schwarmco/go-cartesian-product"
 )
 
-a := []interface{1,2,3}
-b := []interface{a,b,c}
+a := []interface{}{1,2,3}
+b := []interface{}{"a","b","c"}
 
 c := cartesian.Iter(a, b)
 
@@ -29,7 +29,7 @@ for product := range c {
     fmt.Println(product)
 }
 
-// output:
+// Unordered Output:
 // [1 c]
 // [2 c]
 // [3 c]
