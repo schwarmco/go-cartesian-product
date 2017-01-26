@@ -4,7 +4,7 @@ import (
 	"sync"
 )
 
-// Iterator for ToArray'ed ElasticParams
+// takes interface-slices and returns a channel, receiving cartesian products
 func Iter(params ...[]interface{}) chan []interface{} {
 	// create channel
 	c := make(chan []interface{})
