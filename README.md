@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/schwarmco/go-cartesian-product.svg?branch=master)](https://travis-ci.org/schwarmco/go-cartesian-product)
 [![GoDoc](https://godoc.org/github.com/schwarmco/go-cartesian-product?status.svg)](https://godoc.org/github.com/schwarmco/go-cartesian-product)
 
-a package for building [cartesian products](https://github.com/schwarmco/go-cartesian-product.git) in golang
+a package for building [cartesian products](https://en.wikipedia.org/wiki/Cartesian_product) in golang
 
 keep in mind, that because [how golang handles maps](https://blog.golang.org/go-maps-in-action#TOC_7.) your results will not be "in order"
 
@@ -43,4 +43,21 @@ for product := range c {
 // [2 b]
 // [3 a]
 // [3 b]
+```
+
+## Working with Types
+
+Because you are giving interfaces to Iter() and golang doesn't support mixed-type-maps (which is why i created this package) you have to assert types, when you do function-calls or something like that:
+
+```go
+
+func someFunc(a int, b string) {
+    // some code
+}
+
+// ...
+
+for product := range c {
+    someFunc(product[0].(int), product[1].(string))
+}
 ```
