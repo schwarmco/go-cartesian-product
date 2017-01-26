@@ -1,4 +1,8 @@
 # go-cartesian-product
+
+[![Build Status](https://travis-ci.org/schwarmco/go-cartesian-product.svg?branch=master)](https://travis-ci.org/schwarmco/go-cartesian-product)
+[![GoDoc](https://godoc.org/github.com/schwarmco/go-cartesian-product?status.svg)](https://godoc.org/github.com/schwarmco/go-cartesian-product)
+
 a package for building [cartesian products](https://github.com/schwarmco/go-cartesian-product.git) in golang
 
 keep in mind, that because [how golang handles maps](https://blog.golang.org/go-maps-in-action#TOC_7.) your results will not be "in order"
