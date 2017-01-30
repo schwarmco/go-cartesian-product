@@ -6,6 +6,7 @@ import (
     "github.com/schwarmco/go-cartesian-product"
 )
 
+// "Unordered Output" is not testable in Go1.6 - it just passes
 func ExampleIter() {
     a := []interface{}{1,2,3}
     b := []interface{}{"a","b","c"}
