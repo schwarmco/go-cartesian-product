@@ -2,6 +2,7 @@ package cartesian_test
 
 import (
     "fmt"
+
     "github.com/schwarmco/go-cartesian-product"
 )
 
