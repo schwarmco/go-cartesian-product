@@ -2,7 +2,7 @@ package cartesian
 
 import "sync"
 
-// takes interface-slices and returns a channel, receiving cartesian products
+// Iter takes interface-slices and returns a channel, receiving cartesian products
 func Iter(params ...[]interface{}) chan []interface{} {
 	// create channel
 	c := make(chan []interface{})
@@ -33,7 +33,9 @@ func iterate(wg *sync.WaitGroup, channel chan []interface{}, result []interface{
 	for i := 0; i < len(p); i++ {
 		// inc WaitGroup
 		wg.Add(1)
+		// create copy of result
+		resultCopy := append([]interface{}{}, result...)
 		// call self with remaining params
-		go iterate(wg, channel, append(result, p[i]), params...)
+		go iterate(wg, channel, append(resultCopy, p[i]), params...)
 	}
 }
