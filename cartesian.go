@@ -1,41 +1,27 @@
 package cartesian
 
-import "sync"
-
-// Iter takes interface-slices and returns a channel, receiving cartesian products
 func Iter(params ...[]interface{}) chan []interface{} {
 	// create channel
 	c := make(chan []interface{})
-	// create waitgroup
-	var wg sync.WaitGroup
-	// call iterator
-	wg.Add(1)
-	iterate(&wg, c, []interface{}{}, params...)
-	// call channel-closing go-func
-	go func() { wg.Wait(); close(c) }()
-	// return channel
+	if len(params) == 0 {
+		close(c)
+		return c // Return a safe value for nil/empty params.
+	}
+	go func() {
+		iterate(c, params[0], []interface{}{}, params[1:]...)
+		close(c)
+	}()
 	return c
 }
 
-// private, recursive Iteration-Function
-func iterate(wg *sync.WaitGroup, channel chan []interface{}, result []interface{}, params ...[]interface{}) {
-	// dec WaitGroup when finished
-	defer wg.Done()
-	// no more params left?
-	if len(params) == 0 {
-		// send result to channel
-		channel <- result
+func iterate(channel chan []interface{}, topLevel, result []interface{}, needUnpacking ...[]interface{}) {
+	if len(needUnpacking) == 0 {
+		for _, p := range topLevel {
+			channel <- append(result, p)
+		}
 		return
 	}
-	// shift first param
-	p, params := params[0], params[1:]
-	// iterate over it
-	for i := 0; i < len(p); i++ {
-		// inc WaitGroup
-		wg.Add(1)
-		// create copy of result
-		resultCopy := append([]interface{}{}, result...)
-		// call self with remaining params
-		go iterate(wg, channel, append(resultCopy, p[i]), params...)
+	for _, p := range topLevel {
+		iterate(channel, needUnpacking[0], append(result, p), needUnpacking[1:]...)
 	}
 }
