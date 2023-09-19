@@ -15,13 +15,12 @@ func Iter(params ...[]interface{}) chan []interface{} {
 }
 
 func iterate(channel chan []interface{}, topLevel, result []interface{}, needUnpacking ...[]interface{}) {
-	if len(needUnpacking) == 0 {
-		for _, p := range topLevel {
-			channel <- append(result, p)
-		}
-		return
-	}
 	for _, p := range topLevel {
-		iterate(channel, needUnpacking[0], append(result, p), needUnpacking[1:]...)
+		newResult := append(append([]interface{}{}, result...), p)
+		if len(needUnpacking) == 0 {
+			channel <- newResult
+			continue
+		}
+		iterate(channel, needUnpacking[0], newResult, needUnpacking[1:]...)
 	}
 }
