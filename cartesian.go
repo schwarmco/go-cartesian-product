@@ -1,5 +1,6 @@
 package cartesian
 
+// Iter takes interface-slices and returns a channel, receiving cartesian products
 func Iter(params ...[]interface{}) chan []interface{} {
 	// create channel
 	c := make(chan []interface{})
@@ -15,12 +16,13 @@ func Iter(params ...[]interface{}) chan []interface{} {
 }
 
 func iterate(channel chan []interface{}, topLevel, result []interface{}, needUnpacking ...[]interface{}) {
-	for _, p := range topLevel {
-		newResult := append(append([]interface{}{}, result...), p)
-		if len(needUnpacking) == 0 {
-			channel <- newResult
-			continue
+	if len(needUnpacking) == 0 {
+		for _, p := range topLevel {
+			channel <- append(append([]interface{}{}, result...), p)
 		}
-		iterate(channel, needUnpacking[0], newResult, needUnpacking[1:]...)
+		return
+	}
+	for _, p := range topLevel {
+		iterate(channel, needUnpacking[0], append(result, p), needUnpacking[1:]...)
 	}
 }

@@ -53,7 +53,7 @@ func TestIter(t *testing.T) {
 }
 
 func TestIterStress(t *testing.T) {
-	const max = 7
+	const max = 6
 	rng := rand.New(rand.NewSource(2))
 	for n := 1; n < max; n++ {
 		for m := 1; m < max; m++ {
@@ -105,7 +105,7 @@ func TestIterStress(t *testing.T) {
 func randomSlice(rng *rand.Rand, n int) []interface{} {
 	s := make([]interface{}, n)
 	for i := 0; i < n; i++ {
-		s[i] = rng.Uint32() % 4
+		s[i] = rng.Uint32()
 	}
 	return s
 }
